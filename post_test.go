@@ -12,7 +12,6 @@ import (
 )
 
 func TestInsertPost(t *testing.T) {
-
 	jsonValue, _ := json.Marshal(map[string]string{
 		"caption":         "test caption",
 		"imageurl":        "http://example.com/test.png",
