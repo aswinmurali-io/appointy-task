@@ -50,8 +50,31 @@ func TestGetUser(t *testing.T) {
 	}
 	sb := string(body)
 
-	if sb != `{"_id": {"$oid":"6161315a42a6799fc59f7e30"},"name": "Aswin Murali","email": "test@gmail.com","password": "123456","posts": [{"$oid":"6161b2ad7bf8c14019271e82"},{"$oid":"6161b6e17bf8c14019271e83"}]}` {
+	content := strings.Split(sb, " ")
+
+	// {"_id": {"$oid":"6161315a42a679....
+	if content[0] != `{"_id":` {
 		t.Error("User get format is incorrect")
+	}
+	log.Println(sb)
+}
+
+func TestListPostsFromUser(t *testing.T) {
+	resp, err := http.Get(ApiUrl + "posts/users/6161315a42a6799fc59f7e30")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	sb := string(body)
+
+	content := strings.Split(sb, " ")
+
+	// [ObjectID("6161b2ad7bf8c14019271e82") .... ]
+	if content[0] != `[ObjectID("6161b2ad7bf8c14019271e82")` {
+		t.Error("List of posts seems different. Did the logic change? Test data must remain constant")
 	}
 	log.Println(sb)
 }
