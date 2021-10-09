@@ -45,7 +45,7 @@ func userGetDetailsPage(response http.ResponseWriter, request *http.Request) {
 			return
 		}
 	} else {
-		fmt.Fprintf(response, RequestBodyErrorMsg)
+		fmt.Fprintf(response, "%s", RequestBodyErrorMsg)
 		log.Println("[ERROR] Error in reading request body.")
 		log.Println(errorInBody)
 	}
@@ -93,7 +93,7 @@ func userCreatePage(response http.ResponseWriter, request *http.Request) {
 			return
 		}
 	} else {
-		fmt.Fprintf(response, RequestBodyErrorMsg)
+		fmt.Fprintf(response, "%s", RequestBodyErrorMsg)
 		log.Printf("[ERROR] Error in reading request body %s.\n", request.Body)
 		log.Println(errorInBody)
 	}
