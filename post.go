@@ -3,13 +3,15 @@ package main
 
 import (
 	"fmt"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Post struct {
-	Id              int    `bson:"_id" json:"_id"`
-	Caption         string `bson:"caption" json:"caption"`
-	ImageUrl        string `bson:"imageurl" json:"imageurl"`
-	PostedTimestamp string `bson:"postedtimestamp" json:"postedtimestamp"`
+	Id              primitive.ObjectID `bson:"_id" json:"_id"`
+	Caption         string             `bson:"caption" json:"caption"`
+	ImageUrl        string             `bson:"imageurl" json:"imageurl"`
+	PostedTimestamp string             `bson:"postedtimestamp" json:"postedtimestamp"`
 }
 
 type Posts []Post
