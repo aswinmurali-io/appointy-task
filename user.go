@@ -10,10 +10,11 @@ import (
 )
 
 type User struct {
-	Id       primitive.ObjectID `bson:"_id" json:"_id"`
-	Name     string             `bson:"name" json:"name"`
-	Email    string             `bson:"email" json:"email"`
-	Password string             `bson:"password" json:"password"`
+	Id       primitive.ObjectID   `bson:"_id" json:"_id"`
+	Name     string               `bson:"name" json:"name"`
+	Email    string               `bson:"email" json:"email"`
+	Password string               `bson:"password" json:"password"`
+	Posts    []primitive.ObjectID `bson:"posts" json:"posts"`
 }
 
 type Users []User
@@ -34,4 +35,15 @@ func (user User) get() *mongo.SingleResult {
 	)
 	log.Println(result)
 	return result
+}
+
+func (user User) listPosts() []primitive.ObjectID {
+	Collection := Database.Collection("users")
+	log.Printf("[INFO] Getting posts for user id %s.\n", user.Id)
+
+	updatedUser := User{}
+
+	Collection.FindOne(MongoContext, bson.M{"_id": user.Id}).Decode(&updatedUser)
+
+	return updatedUser.Posts
 }
