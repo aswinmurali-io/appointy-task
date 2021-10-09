@@ -2,7 +2,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,19 +19,19 @@ type User struct {
 type Users []User
 
 func (user User) add() {
-	fmt.Println("INFO: Inserting user")
+	log.Printf("[INFO] Inserting user %s.\n", user)
 	result, errorInInsert := Database.Collection("users").InsertOne(
 		MongoContext, user,
 	)
-	fmt.Println(result)
-	fmt.Println(errorInInsert)
+	log.Println(result)
+	log.Println(errorInInsert)
 }
 
 func (user User) get() *mongo.SingleResult {
-	fmt.Println("INFO: Getting user from id", user.Id)
+	log.Printf("[INFO] Getting user from id %s.\n", user.Id)
 	result := Database.Collection("users").FindOne(
 		MongoContext, bson.M{"_id": user.Id},
 	)
-	fmt.Println(result)
+	log.Println(result)
 	return result
 }
