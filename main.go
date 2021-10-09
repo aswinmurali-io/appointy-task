@@ -15,8 +15,8 @@ import (
 func handleRequests() {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/users/", userPage)
-	http.HandleFunc("/posts", postPage)
-
+	http.HandleFunc("/posts/", postPage)
+	http.HandleFunc("/posts/users/", listPostsPage)
 	log.Fatal(http.ListenAndServe(":5000", nil))
 }
 
