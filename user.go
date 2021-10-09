@@ -4,7 +4,9 @@ package main
 import (
 	"fmt"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type User struct {
@@ -25,11 +27,11 @@ func (user User) add() {
 	fmt.Println(errorInInsert)
 }
 
-func (user User) remove() {
-	fmt.Println("INFO: Removing user")
-	result, errorInDelete := Database.Collection("users").DeleteOne(
-		MongoContext, user,
+func (user User) get() *mongo.SingleResult {
+	fmt.Println("INFO: Getting user from id", user.Id)
+	result := Database.Collection("users").FindOne(
+		MongoContext, bson.M{"_id": user.Id},
 	)
 	fmt.Println(result)
-	fmt.Println(errorInDelete)
+	return result
 }
