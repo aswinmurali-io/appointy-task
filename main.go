@@ -12,6 +12,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
+func homePage(response http.ResponseWriter, request *http.Request) {
+	fmt.Fprintf(response, "Insta clone API made by @aswinmurali-io")
+}
+
 func handleRequests() {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/users/", userPage)
@@ -20,8 +24,10 @@ func handleRequests() {
 	log.Fatal(http.ListenAndServe(":5000", nil))
 }
 
-var Database *mongo.Database
-var MongoContext context.Context
+var (
+	Database     *mongo.Database
+	MongoContext context.Context
+)
 
 func connectMongo() {
 	var (
