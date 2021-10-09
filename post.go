@@ -6,10 +6,10 @@ import (
 )
 
 type Post struct {
-	Id              int
-	Caption         string
-	ImageUrl        string
-	PostedTimestamp string
+	Id              int    `bson:"_id" json:"_id"`
+	Caption         string `bson:"caption" json:"caption"`
+	ImageUrl        string `bson:"imageurl" json:"imageurl"`
+	PostedTimestamp string `bson:"postedtimestamp" json:"postedtimestamp"`
 }
 
 type Posts []Post
