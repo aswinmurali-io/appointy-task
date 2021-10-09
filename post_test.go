@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -49,8 +50,12 @@ func TestGetPost(t *testing.T) {
 	}
 	sb := string(body)
 
-	if sb != `{"_id":"6161b6e17bf8c14019271e83","caption":"s2","imageurl":"s2","postedtimestamp":"s2","userid":"6161315a42a6799fc59f7e30"}` {
-		t.Error("User get format is incorrect")
+	content := strings.Split(sb, ":")
+
+	fmt.Println(content[0])
+
+	if content[0] != `{"_id"` {
+		t.Error("Post get format is incorrect")
 	}
 	log.Println(sb)
 }
