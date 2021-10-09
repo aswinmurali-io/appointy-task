@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
+	"net/mail"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // User route
@@ -16,21 +18,32 @@ func userPage(response http.ResponseWriter, request *http.Request) {
 		if errorInBody == nil {
 			keyVal := make(map[string]string)
 			errorInUnmarshal := json.Unmarshal(body, &keyVal)
+
+			// Json validation
 			if errorInUnmarshal == nil {
-				id, errorInId := strconv.Atoi(keyVal["Id"])
-				if errorInId == nil {
-					user := User{
-						Id:       id,
-						Name:     keyVal["Name"],
-						Email:    keyVal["Email"],
-						Password: keyVal["Password"],
-					}
-					user.add()
-					json.NewEncoder(response).Encode(user)
-				} else {
-					fmt.Println("ERROR: Unable to get user id from id value in form.")
-					fmt.Println(errorInId)
+				// Name validation
+				if keyVal["name"] == "" || keyVal["name"] == " " {
+					fmt.Fprintf(response, "ERROR: 'name' key cannot be empty!")
+					break
 				}
+
+				// Email validation
+				_, errorInParsingMail := mail.ParseAddress(keyVal["email"])
+				if errorInParsingMail != nil {
+					fmt.Fprintf(response, "ERROR: Invalid email address!")
+					break
+				}
+
+				user := User{
+					Id:       primitive.NewObjectID(),
+					Name:     keyVal["name"],
+					Email:    keyVal["email"],
+					Password: keyVal["password"],
+				}
+				user.add()
+
+				// print the user object they send as response
+				json.NewEncoder(response).Encode(user)
 			} else {
 				fmt.Println("ERROR: Unable to unmarshal json value.")
 				fmt.Println(errorInUnmarshal)
@@ -45,7 +58,6 @@ func userPage(response http.ResponseWriter, request *http.Request) {
 		fmt.Fprintf(response, "Expecting syntax:-")
 		json.NewEncoder(response).Encode(Users{
 			User{
-				Id:       0,
 				Name:     "name",
 				Email:    "example@mail.com",
 				Password: "password",
