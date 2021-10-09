@@ -3,13 +3,15 @@ package main
 
 import (
 	"fmt"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type User struct {
-	Id       int
-	Name     string
-	Email    string
-	Password string
+	Id       primitive.ObjectID `bson:"_id" json:"_id"`
+	Name     string             `bson:"name" json:"name"`
+	Email    string             `bson:"email" json:"email"`
+	Password string             `bson:"password" json:"password"`
 }
 
 type Users []User
